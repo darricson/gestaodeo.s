@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import CronogramaOsInstalacao
 
 
-admin.site.site_header = 'Álamo - Instalação'
+admin.site.site_header = 'SICI - ÁLAMO'
 
 class CronogramaOsInstalacaoAdmin(admin.ModelAdmin):
     list_display = ('n_os', 'code_client', 'team', 'status', 'date_start', 'service')

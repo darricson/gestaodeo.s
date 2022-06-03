@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 class CronogramaOsInstalacao(models.Model):
     STATUS_CHOICES = [
+        ('AGENDADO', 'AGENDADO'),
         ('NÃO INICIADO', 'NÃO INICIADO'),
         ('INICIADO', 'INICIADO'),
         ('PAUSADO', 'PAUSADO'),

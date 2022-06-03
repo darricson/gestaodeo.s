@@ -37,7 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+        
+    #APPS PRIVATES
     'os_controle',
+    'corporativo',
+    'dep_pessoal',
+    'controle_km',
 ]
 
 MIDDLEWARE = [
