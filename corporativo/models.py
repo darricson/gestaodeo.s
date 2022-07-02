@@ -16,6 +16,12 @@ class Departamento(models.Model):
 class Funcao(models.Model):
     name_function = models.CharField(verbose_name='FUNÇÃO', max_length=40)
     
+    # metodo para alterar as letras para maiusculas
+    def save(self, *args, **kwargs):
+        self.name_function = self.name_function.upper()
+
+        super(Funcao,self).save(*args,**kwargs)
+    
     class Meta:
         verbose_name = 'FUNÇÃO'
         verbose_name_plural = 'FUNÇÕES'

@@ -33,7 +33,7 @@ class Atestado(models.Model):
         verbose_name_plural = 'ATESTADOS'
         
     def __str__ (self):
-        return str(Funcionario.name)
+        return self.name.name
     
     
 class Falta(models.Model):
@@ -48,7 +48,7 @@ class Falta(models.Model):
         verbose_name_plural = 'FALTAS'
             
     def __str__ (self):
-        return str(Funcionario.name)
+        return self.name.name
     
     
 class Extra(models.Model):
@@ -71,4 +71,4 @@ class Extra(models.Model):
         verbose_name_plural = 'PLANTÕES EXTRAS'
             
     def __str__ (self):
-        return str(Funcionario.name)
+        return self.name.name
