@@ -46,7 +46,11 @@ INSTALLED_APPS = [
     'dep_pessoal',
     'controle_km',
     'comercial',
+    
 ]
+# SCRIPT DO ADMIN-INTERFACE, PARA IMPEDIR QUE A CONEXAO SEJA INTERROMPIDA.
+X_FRAME_OPTIONS = "SAMEORIGIN"
+SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
