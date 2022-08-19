@@ -1,5 +1,7 @@
 from http import client
+from mailbox import NotEmptyError
 from pickle import TRUE
+from pyexpat import model
 from tabnanny import verbose
 from django.db import models
 from dep_pessoal.models import Funcionario
@@ -9,6 +11,25 @@ from dep_pessoal.models import Funcionario
 
 class ClienteOrcamento(models.Model):
     client_client = models.CharField(verbose_name='CLIENTE', max_length=80)
+    consultant = models.ForeignKey(Funcionario, verbose_name='CONSULTOR', on_delete=models.PROTECT)
+    
+     # metodo para alterar as letras para maiusculas
+    def save(self, *args, **kwargs):
+        self.client_client = self.client_client.upper()
+
+        super(ClienteOrcamento,self).save(*args,**kwargs)
+
+    class Meta:
+        verbose_name = 'CLIENTE / ORÇAMENTO'
+        verbose_name_plural = 'CLIENTE / ORÇAMENTOS'
+        
+    
+    def __str__ (self): 
+        return self.client_client
+    
+    
+class Orcamento(models.Model):
+    client_client = models.ForeignKey(ClienteOrcamento, verbose_name='CLIENTE', on_delete=models.PROTECT)
     budget = models.IntegerField(verbose_name='ORÇAMENTO Nº')
     consultant = models.ForeignKey(Funcionario, verbose_name='CONSULTOR', on_delete=models.PROTECT)
     term_survey = models.BooleanField(verbose_name='TERMO DE VISTORIA', default=False)
@@ -25,14 +46,20 @@ class ClienteOrcamento(models.Model):
     obs = models.TextField(verbose_name='OBSERVAÇÃO', max_length=1000)
     
     
+     # metodo para alterar as letras para maiusculas
+    def save(self, *args, **kwargs):
+        self.obs = self.obs.upper()
+
+        super(Orcamento,self).save(*args,**kwargs)
+    
     class Meta:
-        verbose_name = 'CLIENTE / ORÇAMENTO'
-        verbose_name_plural = 'CLIENTE / ORÇAMENTOS'
+        verbose_name = 'ORÇAMENTO'
+        verbose_name_plural = 'ORÇAMENTOS'
         
     
-    def __str__ (self):
-        return self.client_client
-    
+    def __str__ (self): 
+        return str(self.budget)
+
     
 class Vistoria(models.Model):
     
@@ -48,20 +75,20 @@ class Vistoria(models.Model):
     client_survey = models.ForeignKey(ClienteOrcamento,verbose_name='CLIENTE', 
                                       related_name='CLIENTE / ORÇAMENTO+', on_delete=models.PROTECT)
     consultant = models.ForeignKey(Funcionario, verbose_name='CONSULTOR', related_name='CONSULTOR', on_delete=models.PROTECT)
-    budget_client = models.ForeignKey(ClienteOrcamento ,verbose_name='ORÇAMENTO Nº', related_name='ORÇAMENTO',
+    budget_client = models.ForeignKey(Orcamento ,verbose_name='ORÇAMENTO Nº', related_name='ORÇAMENTO',
                                       on_delete=models.PROTECT)
     status = models.CharField(verbose_name='STATUS', max_length=15, choices=STATUS_CHOICES,                              
                               default='NÃO INICIADO')
-    date_start = models.DateField(verbose_name='Data Inicio')
-    date_end = models.DateField(verbose_name='Data Fim')
-    date_delivery = models.DateField(verbose_name='Data Entrega')
+    date_start = models.DateField(verbose_name='Data Inicio', null=True, blank=True)
+    date_fin = models.DateField(verbose_name='Data Fim', null=True, blank=True)
+    date_delivery = models.DateField(verbose_name='Data Entrega', null=True, blank=True)
     alteration = models.BooleanField(verbose_name='COM ALTERAÇÃO')
     no_alteration = models.BooleanField(verbose_name='SEM ALTERAÇÃO', default=True)
     # campos para registro na alterção da vistoria
-    obs_eqp_alter = models.TextField(verbose_name='OBSERVAÇÃO DE EQUIPAMENTOS', max_length=1000)
-    obs_implant_alter = models.TextField(verbose_name='OBSERVAÇÃO DE IMPLANTAÇÃO', max_length=1000)
-    obs_service_alter = models.TextField(verbose_name='OBSERVAÇÃO DE SERVIÇO', max_length=1000)
-    obs_infra_alter = models.TextField(verbose_name='OBSERVAÇÃO DE INFRAESTRUTURA', max_length=1000)
+    obs_eqp_alter = models.TextField(verbose_name='OBSERVAÇÃO DE EQUIPAMENTOS', max_length=1000, blank=True)
+    obs_implant_alter = models.TextField(verbose_name='OBSERVAÇÃO DE IMPLANTAÇÃO', max_length=1000, blank=True)
+    obs_service_alter = models.TextField(verbose_name='OBSERVAÇÃO DE SERVIÇO', max_length=1000, blank=True)
+    obs_infra_alter = models.TextField(verbose_name='OBSERVAÇÃO DE INFRAESTRUTURA', max_length=1000, blank=True)
 
     
     def alteration_yes(self):
@@ -78,4 +105,4 @@ class Vistoria(models.Model):
         
         
     def __str__ (self):
-        return str(self.budget_client)
+        return str(self.budget_client.budget)

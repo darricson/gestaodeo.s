@@ -9,6 +9,13 @@ class Funcionario(models.Model):
     name_function = models.ForeignKey(Funcao, verbose_name='FUNÇÃO', on_delete=models.PROTECT)
     dataadmissao = models.DateField(verbose_name='DATA DE ADMISSÃO')
     obs = models.TextField(verbose_name='OBSERVAÇÃO', max_length=500)
+    
+    # metodo para alterar as letras para maiusculas
+    def save(self, *args, **kwargs):
+        self.name = self.name.upper()
+        self.obs = self.obs.upper()
+
+        super(Funcionario,self).save(*args,**kwargs)
 
     
     class Meta:
@@ -27,6 +34,12 @@ class Atestado(models.Model):
     date_finish = models.DateField(verbose_name='DATA FINAL')
     obs = models.TextField(verbose_name='OBSERVAÇÃO', max_length=400)
 
+    # metodo para alterar as letras para maiusculas
+    def save(self, *args, **kwargs):
+        self.cid = self.cid.upper()
+        self.obs = self.obs.upper()
+
+        super(Atestado,self).save(*args,**kwargs)
     
     class Meta:
         verbose_name ='ATESTADO'
@@ -42,6 +55,12 @@ class Falta(models.Model):
     date_init = models.DateField(verbose_name='DATA INICIAL')
     date_finish = models.DateField(verbose_name='DATA FINAL')
     obs = models.TextField(verbose_name='OBSERVAÇÃO', max_length=400)
+        
+    # metodo para alterar as letras para maiusculas
+    def save(self, *args, **kwargs):
+        self.obs = self.obs.upper()
+
+        super(Falta,self).save(*args,**kwargs)
         
     class Meta:
         verbose_name ='Falta'
@@ -65,6 +84,13 @@ class Extra(models.Model):
     type_att = models.CharField(verbose_name='SERVIÇO', max_length=15, choices=TYPE_ATT_CHOICES)
     date_init = models.DateField(verbose_name='DATA ATENDIMENTO')
     obs = models.TextField(verbose_name='OBSERVAÇÃO', max_length=500)
+    
+    # metodo para alterar as letras para maiusculas
+    def save(self, *args, **kwargs):
+        self.client = self.client.upper()
+        self.obs = self.obs.upper()
+
+        super(Extra,self).save(*args,**kwargs)
         
     class Meta:
         verbose_name ='PLANTÃO EXTRA'

@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 
 # Create your models here.
@@ -47,6 +48,7 @@ class CronogramaOsInstalacao(models.Model):
     iva = models.IntegerField(verbose_name='SENSOR DE BARREIRA', default=0)
     dvr = models.IntegerField(verbose_name='DVR/NVR', default=0)
     cam = models.IntegerField(verbose_name='CÂMERA', default=0)
+    raque1 = models.ImageField(verbose_name='RAQUE CFTV', default=0)
     eletrific = models.IntegerField(verbose_name='CENTRAL DE CHOQUE', default=0)
     haste_cerca = models.IntegerField(verbose_name='HASTE DE CERCA', default=0)
     leit_digita = models.IntegerField(verbose_name='LEITOR DIGITAL/FACIAL', default=0)

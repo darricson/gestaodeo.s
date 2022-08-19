@@ -1,6 +1,7 @@
 from ctypes.wintypes import PRECT
 from pickle import TRUE
 from re import VERBOSE
+import re
 from django.db.models import Sum, F, ExpressionWrapper
 from django.db import models
 from dep_pessoal.models import Funcionario
@@ -32,13 +33,7 @@ class Condutor(models.Model):
     conductor = models.ForeignKey(Funcionario, on_delete=models.PROTECT, verbose_name='MOTORISTA', related_name='CONDUTOR')
     vehicle = models.ForeignKey(Vehicle, related_name='VEICULO', verbose_name='VEICULO', on_delete=models.PROTECT)    
     
-    # metodo para alterar as letras para maiusculas
-    def save(self, *args, **kwargs):
-        self.conductor = self.conductor.upper()
-        self.vehicle = self.vehicle.upper()
-
-        super(Condutor,self).save(*args,**kwargs)
-    
+   
     class Meta:
         verbose_name = 'CONDUTOR'
         verbose_name_plural = 'CONDUTORES'
@@ -52,18 +47,20 @@ class ControleKm(models.Model):
     km_init = models.IntegerField(verbose_name='KM INICIAL', null=False)
     km_end = models.IntegerField(verbose_name='KM FINAL', null=False)
     tot_km = models.IntegerField(verbose_name='KM RODADO', blank=TRUE, null=TRUE)
-    
     '''
+    
     def km_rodado(self):
         tot = ControleKm_set.all().aggregate(
-            tot_totkm=Sum((F('km_end')- F('km_init'), output_field=IntegerField()))
+            tot_totkm=Sum((F('km_end') - F('km_init'), output_field=IntegerField()))
             
         )
+        return tot
     
-    '''
+  '''
     class Meta:
         verbose_name = 'CONTROLE DE KM'
         verbose_name_plural = 'CONTROLE DE KMs'
+        ordering = ['da_ta']
         
     def __str__(self):
         return str(self.da_ta)

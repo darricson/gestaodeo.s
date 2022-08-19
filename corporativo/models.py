@@ -5,6 +5,12 @@ from django.db import models
 class Departamento(models.Model):
     name_dep = models.CharField(verbose_name='DEPARTAMENTO', max_length=40)
     
+    # metodo para alterar as letras para maiusculas
+    def save(self, *args, **kwargs):
+        self.name_dep = self.name_dep.upper()
+
+        super(Departamento,self).save(*args,**kwargs)
+        
     class Meta:
         verbose_name = 'DEPARTAMENTO'
         verbose_name_plural = 'DEPARTAMENTOS'
