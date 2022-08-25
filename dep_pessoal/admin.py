@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Funcionario, Atestado, Falta, Extra
+from .models import Funcionario, Atestado, Falta, Extra, DispensaLiberado
 # Register your models here.
 
 
@@ -32,9 +32,16 @@ class ExtraAdmin(admin.ModelAdmin):
     fields = ('name', 'function', 'client', ('type_att', 'date_init'), 'obs')
     list_display = ('name', 'function', 'type_att', 'date_init',)
     search_fields = ('name',)
-
-
+    
 admin.site.register(Extra, ExtraAdmin)
+
+
+
+class DispensaAdmin(admin.ModelAdmin):
+    fields = ('name', 'function', 'date_init', 'date_finish', 'obs')
+    list_display = ('name', 'function', 'date_init', 'date_finish')
+    
+admin.site.register(DispensaLiberado, DispensaAdmin)
 
 admin.site.site_header = 'SICI - ÁLAMO'
 admin.site.site_title = 'SICI - ADMINISTRAÇÃO'

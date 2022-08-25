@@ -98,3 +98,24 @@ class Extra(models.Model):
             
     def __str__ (self):
         return self.name.name
+    
+    
+class DispensaLiberado(models.Model):
+    name = models.ForeignKey(Funcionario, on_delete=models.PROTECT, verbose_name='NOME')
+    function = models.ForeignKey(Funcao, on_delete=models.PROTECT, verbose_name='FUNÇÃO')
+    date_init = models.DateField(verbose_name='DATA INICIAL')
+    date_finish = models.DateField(verbose_name='DATA FINAL')
+    obs = models.TextField(verbose_name='OBSERVAÇÃO', max_length=400)
+        
+    # metodo para alterar as letras para maiusculas
+    def save(self, *args, **kwargs):
+        self.obs = self.obs.upper()
+
+        super(DispensaLiberado,self).save(*args,**kwargs)
+        
+    class Meta:
+        verbose_name ='DISPENSA / LIBERAÇÃO'
+        verbose_name_plural = 'DISPENSA / LIBERAÇÃO'
+            
+    def __str__ (self):
+        return self.name.name
